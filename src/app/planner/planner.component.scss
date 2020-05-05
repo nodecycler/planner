@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+  height: 100%;
+}
+app-map {
+  flex: 1;
+}
+app-sidepane {
+  width: 350px;
+}

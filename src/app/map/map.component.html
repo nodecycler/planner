@@ -1,0 +1,31 @@
+<mgl-map
+  [style]="'mapbox://styles/mapbox/outdoors-v11'"
+  [zoom]="[12]"
+  [center]="[4.236673, 50.995208]"
+  (load)="onLoad($event)"
+  (move)="onMove()"
+>
+  <mgl-control
+    mglNavigation
+  ></mgl-control>
+
+  <mgl-geojson-source
+    id="routes"
+    data="./data/routes.json"
+  ></mgl-geojson-source>
+  <mgl-layer
+    id="routes-layer"
+    source="routes"
+    type="line"
+    [paint]="{
+      'line-color': '#b81f2b',
+      'line-width': 2
+    }"
+  ></mgl-layer>
+  <mgl-marker *ngFor="let node of nodes$ | async"
+              [lngLat]="node.location"
+  >
+    <div class="node-marker">{{node.number}}</div>
+  </mgl-marker>
+
+</mgl-map>
