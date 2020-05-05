@@ -19,7 +19,7 @@ export class MapComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.nodes$ = combineLatest([this.http.get("/data/nodes.json") as Observable<Node[]>, this.bounds$])
+    this.nodes$ = combineLatest([this.http.get("./data/nodes.json") as Observable<Node[]>, this.bounds$])
       .pipe(
         debounceTime(250),
         map(([nodes, bounds]) => {
