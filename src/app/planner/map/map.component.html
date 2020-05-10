@@ -22,11 +22,31 @@
       'line-width': 2
     }"
   ></mgl-layer>
+  <mgl-geojson-source
+    *ngFor="let connection of connections"
+    id="source-{{connection.route}}"
+    data="./data/routes/{{connection.route}}.json"
+  ></mgl-geojson-source>
+  <mgl-layer
+    *ngFor="let connection of connections"
+    id="layer-{{connection.route}}"
+    source="source-{{connection.route}}"
+    type="line"
+    [paint]="{
+      'line-color': '#579120',
+      'line-width': 4
+    }"
+  ></mgl-layer>
+
   <mgl-marker *ngFor="let node of nodes$ | async"
               [lngLat]="node.location"
   >
-    <button *ngIf="nodesClickable" (click)="selectNode(node.id)" class="node-marker">{{node.number}}</button>
-    <div *ngIf="!nodesClickable" class="node-marker">{{node.number}}</div>
+    <button
+      [disabled]="!isClickable(node.id)"
+      [class.clickable]="isClickable(node.id)"
+      (click)="selectNode(node.id)"
+      class="node-marker"
+    >{{node.number}}</button>
   </mgl-marker>
 
 </mgl-map>

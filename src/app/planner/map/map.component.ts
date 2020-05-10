@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {combineLatest, Observable, Subject} from 'rxjs';
 import {debounceTime, map, tap} from 'rxjs/operators';
-import {Node} from '../../store/nodes/nodes.types';
+import {Node, NodeConnection} from '../../store/nodes/nodes.types';
 import {booleanContains} from '@turf/turf';
 import {LngLatBounds, Map} from 'mapbox-gl';
 import {SelectionFacadeService} from '../../services/selection-facade.service';
@@ -19,6 +19,7 @@ export class MapComponent implements OnInit {
   map: Map;
   bounds$ = new Subject<LngLatBounds>();
   nodesClickable = true;
+  connections: NodeConnection[] = [];
 
   constructor(private selectionFacade: SelectionFacadeService, private nodesFacade: NodesFacadeService) { }
 
@@ -33,6 +34,9 @@ export class MapComponent implements OnInit {
     this.selectionFacade.startingNode$.subscribe(node => {
       this.nodesClickable = !node;
     });
+    this.selectionFacade.lastNode$.subscribe(node => {
+      this.connections = node ? node.connections : [];
+    });
   }
 
   onLoad(mapInstance: Map) {
@@ -44,5 +48,8 @@ export class MapComponent implements OnInit {
   }
   selectNode(node) {
     this.selectionFacade.dispatch(addNode({node}));
+  }
+  isClickable(id) {
+    return this.nodesClickable || !!this.connections.find(connection => connection.id === id)
   }
 }

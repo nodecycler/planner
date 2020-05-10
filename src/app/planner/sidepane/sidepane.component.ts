@@ -13,6 +13,7 @@ export class SidepaneComponent implements OnInit {
 
   ngOnInit() {
     this.selectionFacade.startingNode$.subscribe(node => {
+      console.log(node);
       this.startingNode = node;
     });
   }

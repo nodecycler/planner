@@ -1,1 +1,4 @@
 <p *ngIf="!startingNode">Selecteer een knooppunt op de kaart op te starten...</p>
+<div class="node" *ngIf="startingNode">
+  {{startingNode.number}}
+</div>
