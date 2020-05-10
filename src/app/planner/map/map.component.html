@@ -18,14 +18,15 @@
     source="routes"
     type="line"
     [paint]="{
-      'line-color': '#b81f2b',
+      'line-color': '#85DD31',
       'line-width': 2
     }"
   ></mgl-layer>
   <mgl-marker *ngFor="let node of nodes$ | async"
               [lngLat]="node.location"
   >
-    <div class="node-marker">{{node.number}}</div>
+    <button *ngIf="nodesClickable" (click)="selectNode(node.id)" class="node-marker">{{node.number}}</button>
+    <div *ngIf="!nodesClickable" class="node-marker">{{node.number}}</div>
   </mgl-marker>
 
 </mgl-map>

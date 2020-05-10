@@ -1,7 +1,7 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {PlannerModule} from './planner/planner.module';
 
 @NgModule({
@@ -10,7 +10,7 @@ import {PlannerModule} from './planner/planner.module';
   ],
   imports: [
     BrowserModule,
-    PlannerModule
+    PlannerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
