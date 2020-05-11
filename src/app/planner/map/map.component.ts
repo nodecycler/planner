@@ -20,6 +20,11 @@ export class MapComponent implements OnInit {
   bounds$ = new Subject<LngLatBounds>();
   nodesClickable = true;
   connections: NodeConnection[] = [];
+  layers: {
+    route: string;
+    id: number;
+  }[] = [];
+  layerIndex = 0;
 
   constructor(private selectionFacade: SelectionFacadeService, private nodesFacade: NodesFacadeService) { }
 
@@ -36,6 +41,10 @@ export class MapComponent implements OnInit {
     });
     this.selectionFacade.lastNode$.subscribe(node => {
       this.connections = node ? node.connections : [];
+      this.layers = this.connections.map(connection => ({
+        id: this.layerIndex++,
+        route: connection.route,
+      }));
     });
   }
 
@@ -50,6 +59,6 @@ export class MapComponent implements OnInit {
     this.selectionFacade.dispatch(addNode({node}));
   }
   isClickable(id) {
-    return this.nodesClickable || !!this.connections.find(connection => connection.id === id)
+    return this.nodesClickable || !!this.connections.find(connection => connection.id === id);
   }
 }

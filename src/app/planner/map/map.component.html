@@ -22,21 +22,22 @@
       'line-width': 2
     }"
   ></mgl-layer>
-  <mgl-geojson-source
-    *ngFor="let connection of connections"
-    id="source-{{connection.route}}"
-    data="./data/routes/{{connection.route}}.json"
-  ></mgl-geojson-source>
-  <mgl-layer
-    *ngFor="let connection of connections"
-    id="layer-{{connection.route}}"
-    source="source-{{connection.route}}"
-    type="line"
-    [paint]="{
+  <ng-container *ngFor="let layer of layers">
+    <mgl-geojson-source
+      id="source-{{layer.id}}"
+      data="./data/routes/{{layer.route}}.json"
+    ></mgl-geojson-source>
+    <mgl-layer
+      id="layer-{{layer.id}}"
+      source="source-{{layer.id}}"
+      type="line"
+      [paint]="{
       'line-color': '#579120',
       'line-width': 4
     }"
-  ></mgl-layer>
+    ></mgl-layer>
+
+  </ng-container>
 
   <mgl-marker *ngFor="let node of nodes$ | async"
               [lngLat]="node.location"

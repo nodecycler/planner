@@ -9,13 +9,25 @@ import {SelectionFacadeService} from '../../services/selection-facade.service';
 export class SidepaneComponent implements OnInit {
 
   startingNode = null;
+  selectedNodes = [];
   constructor(private selectionFacade: SelectionFacadeService) { }
 
   ngOnInit() {
     this.selectionFacade.startingNode$.subscribe(node => {
-      console.log(node);
       this.startingNode = node;
+    });
+    this.selectionFacade.selectedNodes$.subscribe(nodes => {
+      this.selectedNodes = nodes;
     });
   }
 
+  get connections() {
+    const connections = [];
+    for (let i = 1; i < this.selectedNodes.length; i++) {
+      const previousNode = this.selectedNodes[i - 1];
+      const node = this.selectedNodes[i];
+      connections.push(previousNode.connections.find(connection => connection.id === node.id));
+    }
+    return connections;
+  }
 }

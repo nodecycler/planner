@@ -14,7 +14,6 @@ export class SelectionFacadeService {
     map(([ids, nodes]) => {
       return ids.map(id => nodes.find((node: Node) => id === node.id));
     }),
-    tap(nodes => console.log('selectedNodes$', nodes))
   );
   public startingNode$ = this.selectedNodes$.pipe(
     map(nodes => nodes.length > 0 ? nodes[0] : null)

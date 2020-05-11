@@ -2,3 +2,9 @@
 <div class="node" *ngIf="startingNode">
   {{startingNode.number}}
 </div>
+<ul>
+  <li *ngFor="let connection of connections">
+    Afstand: {{connection.distance}}<br />
+    <strong>{{connection.number}}</strong>
+  </li>
+</ul>
