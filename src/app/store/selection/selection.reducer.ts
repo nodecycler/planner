@@ -5,7 +5,7 @@ const reducer = createReducer(
   [],
   on(Actions.reset, state => ([])),
   on(Actions.addNode, (state, action) => ([...state, action.node])),
-  on(Actions.removeLastNode, (state) => ([...state.splice(0, state.length - 1)])),
+  on(Actions.removeLastNode, (state) => ([...state].splice(0, state.length - 1))),
 );
 
 export function selectionReducer(state = [], action: Action) {

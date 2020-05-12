@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SelectionFacadeService} from '../../services/selection-facade.service';
+import {removeLastNode, reset} from '../../store/selection/selection.actions';
 
 @Component({
   selector: 'app-sidepane',
@@ -29,5 +30,25 @@ export class SidepaneComponent implements OnInit {
       connections.push(previousNode.connections.find(connection => connection.id === node.id));
     }
     return connections;
+  }
+  formatDistance(distance) {
+    if (distance > 1000) {
+      return `${Math.round(distance / 100) / 10} km`;
+    }
+    return `${Math.round(distance)} m`;
+
+  }
+  get total() {
+    let total = 0;
+    this.connections.forEach(connection => {
+      total += connection.distance;
+    });
+    return this.formatDistance(total);
+  }
+  reset() {
+    this.selectionFacade.dispatch(reset());
+  }
+  goback() {
+    this.selectionFacade.dispatch(removeLastNode());
   }
 }

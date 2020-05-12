@@ -2,9 +2,16 @@
 <div class="node" *ngIf="startingNode">
   {{startingNode.number}}
 </div>
-<ul>
-  <li *ngFor="let connection of connections">
-    Afstand: {{connection.distance}}<br />
-    <strong>{{connection.number}}</strong>
-  </li>
-</ul>
+  <ul class="connections">
+    <li *ngFor="let connection of connections">
+      <div class="distance">{{formatDistance(connection.distance)}}</div>
+      <div class="node">{{connection.number}}</div>
+    </li>
+  </ul>
+<ng-container *ngIf="connections && connections.length > 0">
+  <p>Totale afstand: <strong>{{total}}</strong></p>
+</ng-container>
+<div class="buttons" *ngIf="startingNode">
+  <button (click)="reset()">Wissen</button>
+  <button (click)="goback()">Stap terug</button>
+</div>
