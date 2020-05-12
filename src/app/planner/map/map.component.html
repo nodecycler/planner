@@ -9,6 +9,7 @@
     mglNavigation
   ></mgl-control>
 
+  <!-- Routes -->
   <mgl-geojson-source
     id="routes"
     data="./data/routes.json"
@@ -22,7 +23,9 @@
       'line-width': 2
     }"
   ></mgl-layer>
-  <ng-container *ngFor="let layer of layers">
+
+  <!-- Routes connection last selected node -->
+  <ng-container *ngFor="let layer of connectingRoutes">
     <mgl-geojson-source
       id="source-{{layer.id}}"
       data="./data/routes/{{layer.route}}.json"
@@ -38,12 +41,30 @@
     ></mgl-layer>
 
   </ng-container>
+  <!-- Selected route -->
+  <ng-container *ngFor="let layer of selectedRoutes">
+    <mgl-geojson-source
+      id="selected-{{layer.id}}"
+      data="./data/routes/{{layer.route}}.json"
+    ></mgl-geojson-source>
+    <mgl-layer
+      id="selectedlayer-{{layer.id}}"
+      source="selected-{{layer.id}}"
+      type="line"
+      [paint]="{
+      'line-color': '#336699',
+      'line-width': 4
+    }"
+    ></mgl-layer>
 
+  </ng-container>
+
+  <!-- Nodes -->
   <mgl-marker *ngFor="let node of nodes$ | async"
               [lngLat]="node.location"
   >
     <button
-      [disabled]="!isClickable(node.id)"
+      [disabled]="!(nodesClickable || isClickable(node.id))"
       [class.clickable]="isClickable(node.id)"
       (click)="selectNode(node.id)"
       class="node-marker"

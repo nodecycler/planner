@@ -11,6 +11,8 @@ export class SidepaneComponent implements OnInit {
 
   startingNode = null;
   selectedNodes = [];
+  connections = [];
+
   constructor(private selectionFacade: SelectionFacadeService) { }
 
   ngOnInit() {
@@ -20,17 +22,11 @@ export class SidepaneComponent implements OnInit {
     this.selectionFacade.selectedNodes$.subscribe(nodes => {
       this.selectedNodes = nodes;
     });
+    this.selectionFacade.connections$.subscribe(connections => {
+      this.connections = connections;
+    });
   }
 
-  get connections() {
-    const connections = [];
-    for (let i = 1; i < this.selectedNodes.length; i++) {
-      const previousNode = this.selectedNodes[i - 1];
-      const node = this.selectedNodes[i];
-      connections.push(previousNode.connections.find(connection => connection.id === node.id));
-    }
-    return connections;
-  }
   formatDistance(distance) {
     if (distance > 1000) {
       return `${Math.round(distance / 100) / 10} km`;

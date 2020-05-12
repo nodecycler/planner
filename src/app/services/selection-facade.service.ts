@@ -22,6 +22,18 @@ export class SelectionFacadeService {
     map(nodes => nodes.length > 0 ? nodes[nodes.length - 1] : null),
   );
 
+  public connections$ = this.selectedNodes$.pipe(
+    map(nodes => {
+      const connections = [];
+      for (let i = 1; i < nodes.length; i++) {
+        const previousNode = nodes[i - 1];
+        const node = nodes[i];
+        connections.push(previousNode.connections.find(connection => connection.id === node.id));
+      }
+      return connections;
+    })
+  );
+
   constructor(private store: Store<AppState>, private nodesFacade: NodesFacadeService) {
   }
 

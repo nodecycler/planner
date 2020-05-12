@@ -8,7 +8,16 @@ mgl-map {
   border-radius: 50%;
   width: 2em;
   height: 2em;
-  line-height: 2em;
   text-align: center;
-  font-size: 15px;
+  font-size: 16px;
+  padding: 0;
+  transition: all .5s ease-in-out;
+  transform: scale(1) translateY(0);
+  &[disabled] {
+    color: black;
+  }
+  &.clickable {
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, .2);
+    transform: scale(1.2) translateY(-2px);
+  }
 }

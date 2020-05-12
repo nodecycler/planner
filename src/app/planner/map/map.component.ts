@@ -19,8 +19,12 @@ export class MapComponent implements OnInit {
   map: Map;
   bounds$ = new Subject<LngLatBounds>();
   nodesClickable = true;
-  connections: NodeConnection[] = [];
-  layers: {
+  selectableConnections = [];
+  selectedRoutes: {
+    route: string;
+    id: number;
+  }[] = [];
+  connectingRoutes: {
     route: string;
     id: number;
   }[] = [];
@@ -40,8 +44,15 @@ export class MapComponent implements OnInit {
       this.nodesClickable = !node;
     });
     this.selectionFacade.lastNode$.subscribe(node => {
-      this.connections = node ? node.connections : [];
-      this.layers = this.connections.map(connection => ({
+      const connections = node ? node.connections : [];
+      this.selectableConnections = connections;
+      this.connectingRoutes = connections.map(connection => ({
+        id: this.layerIndex++,
+        route: connection.route,
+      }));
+    });
+    this.selectionFacade.connections$.subscribe(routes => {
+      this.selectedRoutes = routes.map(connection => ({
         id: this.layerIndex++,
         route: connection.route,
       }));
@@ -59,6 +70,6 @@ export class MapComponent implements OnInit {
     this.selectionFacade.dispatch(addNode({node}));
   }
   isClickable(id) {
-    return this.nodesClickable || !!this.connections.find(connection => connection.id === id);
+    return !!this.selectableConnections.find(connection => connection.id === id);
   }
 }
