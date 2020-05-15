@@ -62,6 +62,7 @@
   <!-- Nodes -->
   <mgl-marker *ngFor="let node of nodes$ | async"
               [lngLat]="node.location"
+              className="mapboxgl-marker mapboxgl-marker-anchor-center {{isClickable(node.id) ? 'clickable' : ''}}"
   >
     <button
       [disabled]="!(nodesClickable || isClickable(node.id))"

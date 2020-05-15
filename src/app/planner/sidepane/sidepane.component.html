@@ -1,17 +1,14 @@
-<p *ngIf="!startingNode">Selecteer een knooppunt op de kaart op te starten...</p>
-<div class="node" *ngIf="startingNode">
-  {{startingNode.number}}
-</div>
-  <ul class="connections">
+<div class="container" *ngIf="startingNode">
+  <ul class="connections" #connectionsEl>
+    <li>
+      <div class="node">
+        {{startingNode.number}}
+      </div>
+    </li>
     <li *ngFor="let connection of connections">
       <div class="distance">{{formatDistance(connection.distance)}}</div>
       <div class="node">{{connection.number}}</div>
     </li>
   </ul>
-<ng-container *ngIf="connections && connections.length > 0">
-  <p>Totale afstand: <strong>{{total}}</strong></p>
-</ng-container>
-<div class="buttons" *ngIf="startingNode">
-  <button (click)="reset()">Wissen</button>
-  <button (click)="goback()">Stap terug</button>
+  <div class="total" *ngIf="connections && connections.length > 0">{{total}}</div>
 </div>

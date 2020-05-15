@@ -9,3 +9,8 @@ html, body {
   padding: 0;
   font-family: 'Open Sans', sans-serif;
 }
+
+// dirty fix to get clickable markers in front of the others
+.mapboxgl-marker-anchor-center.clickable {
+  z-index: 1;
+}

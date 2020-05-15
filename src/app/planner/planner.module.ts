@@ -6,10 +6,16 @@ import {SidepaneComponent} from './sidepane/sidepane.component';
 import {NgxMapboxGLModule} from 'ngx-mapbox-gl';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '../store/store.module';
+import {ActionbarComponent} from './actionbar/actionbar.component';
 
 
 @NgModule({
-  declarations: [PlannerComponent, MapComponent, SidepaneComponent],
+  declarations: [
+    PlannerComponent,
+    MapComponent,
+    SidepaneComponent,
+    ActionbarComponent,
+  ],
   exports: [
     PlannerComponent
   ],

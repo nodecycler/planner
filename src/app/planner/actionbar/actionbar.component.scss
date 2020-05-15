@@ -1,0 +1,16 @@
+.buttons {
+  background: white;
+  border-radius: 4px;
+  button {
+    padding: 12px;
+    font-size: 16px;
+    margin: 8px;
+    border-radius: 4px;
+    background-color: #BB3333;
+    transition: background-color .2s ease-in-out;
+    color: white;
+    &:active {
+      background-color: #992222;
+    }
+  }
+}

@@ -5,13 +5,9 @@
 app-map {
   flex: 1;
 }
-app-sidepane {
-  display: none;
-}
-@media screen and (min-width: 600px) {
-  app-sidepane {
-    display: block;
-    width: 200px;
-  }
-
+app-actionbar {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
 }
