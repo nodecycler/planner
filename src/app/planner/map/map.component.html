@@ -4,6 +4,8 @@
   [center]="[4.236673, 50.995208]"
   (load)="onLoad($event)"
   (move)="onMove()"
+  [fitBounds]="fitBounds"
+  [fitBoundsOptions]="{padding: 200}"
 >
   <mgl-control
     mglNavigation

@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {combineLatest, Observable, Subject} from 'rxjs';
-import {debounceTime, map, tap} from 'rxjs/operators';
-import {Node, NodeConnection} from '../../store/nodes/nodes.types';
-import {booleanContains} from '@turf/turf';
+import {Component, OnInit} from '@angular/core';
+import {combineLatest, Subject} from 'rxjs';
+import {debounceTime, map} from 'rxjs/operators';
 import {LngLatBounds, Map} from 'mapbox-gl';
 import {SelectionFacadeService} from '../../services/selection-facade.service';
 import {NodesFacadeService} from '../../services/nodes-facade.service';
@@ -29,14 +26,17 @@ export class MapComponent implements OnInit {
     id: number;
   }[] = [];
   layerIndex = 0;
+  fitBounds: LngLatBounds = undefined;
 
-  constructor(private selectionFacade: SelectionFacadeService, private nodesFacade: NodesFacadeService) { }
+  constructor(private selectionFacade: SelectionFacadeService, private nodesFacade: NodesFacadeService) {
+  }
 
   ngOnInit() {
     this.nodes$ = combineLatest([this.nodesFacade.nodes$, this.bounds$])
       .pipe(
         debounceTime(250),
         map(([nodes, bounds]) => {
+          console.log(nodes.filter(node => node.id === '9431'));
           return nodes.filter(node => bounds.contains(node.location));
         })
       );
@@ -50,6 +50,12 @@ export class MapComponent implements OnInit {
         id: this.layerIndex++,
         route: connection.route,
       }));
+      const bounds = new LngLatBounds(node.location, node.location);
+
+      connections.forEach(connection => {
+        bounds.extend(connection.location);
+      });
+      this.fitBounds = bounds;
     });
     this.selectionFacade.connections$.subscribe(routes => {
       this.selectedRoutes = routes.map(connection => ({
@@ -63,12 +69,15 @@ export class MapComponent implements OnInit {
     this.map = mapInstance;
     this.bounds$.next(mapInstance.getBounds());
   }
+
   onMove() {
     this.bounds$.next(this.map.getBounds());
   }
+
   selectNode(node) {
     this.selectionFacade.dispatch(addNode({node}));
   }
+
   isClickable(id) {
     return !!this.selectableConnections.find(connection => connection.id === id);
   }

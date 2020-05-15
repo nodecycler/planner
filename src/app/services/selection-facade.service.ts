@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store';
 import {NodesFacadeService} from './nodes-facade.service';
-import {map, tap, withLatestFrom} from 'rxjs/operators';
+import {filter, map, tap, withLatestFrom} from 'rxjs/operators';
 import {Node} from '../store/nodes/nodes.types';
 
 @Injectable({
@@ -20,6 +20,7 @@ export class SelectionFacadeService {
   );
   public lastNode$ = this.selectedNodes$.pipe(
     map(nodes => nodes.length > 0 ? nodes[nodes.length - 1] : null),
+    filter(node => !!node),
   );
 
   public connections$ = this.selectedNodes$.pipe(
