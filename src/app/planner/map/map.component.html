@@ -1,11 +1,10 @@
 <mgl-map
   [style]="'mapbox://styles/mapbox/outdoors-v11'"
   [zoom]="[12]"
-  [center]="[4.236673, 50.995208]"
+  [center]="center"
+  movingMethod="easeTo"
   (load)="onLoad($event)"
   (move)="onMove()"
-  [fitBounds]="fitBounds"
-  [fitBoundsOptions]="{padding: 200}"
 >
   <mgl-control
     mglNavigation

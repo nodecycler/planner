@@ -4,12 +4,12 @@ mgl-map {
 }
 .node-marker {
   background: white;
-  border: solid 2px black;
+  border: solid 1px black;
   border-radius: 50%;
-  width: 2em;
-  height: 2em;
+  width: 1.8em;
+  height: 1.8em;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   padding: 0;
   transition: all .5s ease-in-out;
   transform: scale(1) translateY(0);

@@ -7,6 +7,7 @@ import {NgxMapboxGLModule} from 'ngx-mapbox-gl';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '../store/store.module';
 import {ActionbarComponent} from './actionbar/actionbar.component';
+import {StorageServiceModule} from 'angular-webstorage-service';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import {ActionbarComponent} from './actionbar/actionbar.component';
       accessToken: 'pk.eyJ1Ijoid2ViYmVyaWciLCJhIjoiY2s4cmFzYjFnMDFhMTNlcGVldzQxZGw1diJ9.TqIpoD7cCQNa6_QaZRZr5Q'
     }),
     StoreModule,
+    StorageServiceModule,
   ]
 })
 export class PlannerModule {

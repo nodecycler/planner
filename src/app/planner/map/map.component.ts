@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {combineLatest, Subject} from 'rxjs';
 import {debounceTime, map} from 'rxjs/operators';
 import {LngLatBounds, Map} from 'mapbox-gl';
 import {SelectionFacadeService} from '../../services/selection-facade.service';
 import {NodesFacadeService} from '../../services/nodes-facade.service';
 import {addNode} from '../../store/selection/selection.actions';
+import {LOCAL_STORAGE, StorageService} from 'angular-webstorage-service';
 
 @Component({
   selector: 'app-map',
@@ -27,16 +28,25 @@ export class MapComponent implements OnInit {
   }[] = [];
   layerIndex = 0;
   fitBounds: LngLatBounds = undefined;
+  center = [4.236673, 50.995208];
 
-  constructor(private selectionFacade: SelectionFacadeService, private nodesFacade: NodesFacadeService) {
+  constructor(
+    private selectionFacade: SelectionFacadeService,
+    private nodesFacade: NodesFacadeService,
+    @Inject(LOCAL_STORAGE) private storage: StorageService
+  ) {
   }
 
   ngOnInit() {
+    const storedCenter = this.storage.get('position');
+    if (storedCenter) {
+      this.center = storedCenter;
+    }
     this.nodes$ = combineLatest([this.nodesFacade.nodes$, this.bounds$])
       .pipe(
         debounceTime(250),
         map(([nodes, bounds]) => {
-          console.log(nodes.filter(node => node.id === '9431'));
+          this.storage.set('position', this.map.getCenter().toArray());
           return nodes.filter(node => bounds.contains(node.location));
         })
       );
@@ -50,12 +60,7 @@ export class MapComponent implements OnInit {
         id: this.layerIndex++,
         route: connection.route,
       }));
-      const bounds = new LngLatBounds(node.location, node.location);
-
-      connections.forEach(connection => {
-        bounds.extend(connection.location);
-      });
-      this.fitBounds = bounds;
+      this.center = node.location;
     });
     this.selectionFacade.connections$.subscribe(routes => {
       this.selectedRoutes = routes.map(connection => ({
