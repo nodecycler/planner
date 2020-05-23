@@ -4,8 +4,9 @@ import {debounceTime, map} from 'rxjs/operators';
 import {LngLatBounds, Map} from 'mapbox-gl';
 import {SelectionFacadeService} from '../../services/selection-facade.service';
 import {NodesFacadeService} from '../../services/nodes-facade.service';
-import {addNode} from '../../store/selection/selection.actions';
+import {addNode, createRoute} from '../../store/selection/selection.actions';
 import {LOCAL_STORAGE, StorageService} from 'angular-webstorage-service';
+import {Node} from '../../store/nodes/nodes.types';
 
 @Component({
   selector: 'app-map',
@@ -16,18 +17,14 @@ export class MapComponent implements OnInit {
   nodes$;
   map: Map;
   bounds$ = new Subject<LngLatBounds>();
-  nodesClickable = true;
-  selectableConnections = [];
+  startingNode: Node = null;
+  lastNode: Node = null;
+
   selectedRoutes: {
     route: string;
     id: number;
   }[] = [];
-  connectingRoutes: {
-    route: string;
-    id: number;
-  }[] = [];
   layerIndex = 0;
-  fitBounds: LngLatBounds = undefined;
   center = [4.236673, 50.995208];
 
   constructor(
@@ -51,18 +48,15 @@ export class MapComponent implements OnInit {
         })
       );
     this.selectionFacade.startingNode$.subscribe(node => {
-      this.nodesClickable = !node;
+      this.startingNode = node;
     });
     this.selectionFacade.lastNode$.subscribe(node => {
-      const connections = node ? node.connections : [];
-      this.selectableConnections = connections;
-      this.connectingRoutes = connections.map(connection => ({
-        id: this.layerIndex++,
-        route: connection.route,
-      }));
-      this.center = node.location;
+      this.lastNode = node;
+      if (node) {
+        this.center = node.location;
+      }
     });
-    this.selectionFacade.connections$.subscribe(routes => {
+    this.selectionFacade.connections$.subscribe((routes = []) => {
       this.selectedRoutes = routes.map(connection => ({
         id: this.layerIndex++,
         route: connection.route,
@@ -79,11 +73,17 @@ export class MapComponent implements OnInit {
     this.bounds$.next(this.map.getBounds());
   }
 
-  selectNode(node) {
-    this.selectionFacade.dispatch(addNode({node}));
+  selectNode(destination) {
+    this.selectionFacade.dispatch(createRoute({destination}));
   }
 
-  isClickable(id) {
-    return !!this.selectableConnections.find(connection => connection.id === id);
+  getNodeClass(id) {
+    if (this.startingNode && this.startingNode.id === id) {
+      return '__start';
+    }
+    if (this.lastNode && this.lastNode.id === id) {
+      return '__last';
+    }
+    return '';
   }
 }

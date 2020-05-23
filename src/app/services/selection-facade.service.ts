@@ -20,7 +20,6 @@ export class SelectionFacadeService {
   );
   public lastNode$ = this.selectedNodes$.pipe(
     map(nodes => nodes.length > 0 ? nodes[nodes.length - 1] : null),
-    filter(node => !!node),
   );
 
   public connections$ = this.selectedNodes$.pipe(

@@ -7,6 +7,7 @@ import {StoreModule as NgrxStoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {NodesEffects} from './nodes/nodes.effects';
 import {HttpClientModule} from '@angular/common/http';
+import {SelectionEffects} from './selection/selection.effects';
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import {HttpClientModule} from '@angular/common/http';
       }
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([NodesEffects]),
+    EffectsModule.forRoot([NodesEffects, SelectionEffects]),
 
   ]
 })
