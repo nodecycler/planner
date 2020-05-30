@@ -6806,8 +6806,8 @@ node-releases@^1.1.52, node-releases@^1.1.53:
   integrity sha512-wp8zyQVwef2hpZ/dJH7SfSrIPD6YoJz6BDQDpGEkcA0s3LpAQoxBIYmfIq6QAhC1DhwsyCgTaTTcONwX8qzCuQ==
 
 "nodecycler-data@git+ssh://git@github.com:nodecycler/data.git":
-  version "1.0.3"
-  resolved "git+ssh://git@github.com:nodecycler/data.git#6a91f1c1e2cda2ab83731acbd388596b5383c9e2"
+  version "2.0.0"
+  resolved "git+ssh://git@github.com:nodecycler/data.git#522f4e2831c336eddef5fc43c2ee7e62dfe60b8b"
 
 normalize-package-data@^2.0.0, normalize-package-data@^2.3.2, normalize-package-data@^2.3.4, normalize-package-data@^2.4.0:
   version "2.5.0"
